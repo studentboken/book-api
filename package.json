@@ -22,7 +22,8 @@
     "xo": "^0.23.0"
   },
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2"
   },
   "xo": {
     "space": 2,
@@ -58,9 +59,6 @@
     }
   },
   "ava": {
-    "files": [
-      "test/*.js"
-    ],
     "concurrency": 5,
     "failFast": false,
     "failWithoutAssertions": false,
