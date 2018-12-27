@@ -1,10 +1,7 @@
-const Source = require('./lib/adlibris');
+const Source = require('./lib/akademibokhandeln');
 
 const source = new Source();
-source.search('test', {items: 25}).then(x => {
+source.search('hej', {items: 20}).then(x => {
   console.log(x.length);
-  console.log(x[3]);
-  source.fetch(x[3]).then(y => {
-    console.log(y);
-  });
+  console.log(x);
 });
