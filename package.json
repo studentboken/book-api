@@ -58,6 +58,9 @@
       "object-curly-spacing": [
         "error",
         "never"
+      ],
+      "padding-line-between-statements": [
+        "off"
       ]
     }
   },
