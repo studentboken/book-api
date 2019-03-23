@@ -66,7 +66,10 @@ npm install
 
 Follow the conventions enforced:
 ```
-npm test
+npm run lint
+npm run test
+npm run coverage
+npm run check-duplicate-code
 ```
 
 ### Disclaimer

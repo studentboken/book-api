@@ -4,7 +4,10 @@
   "description": "An API to retrieve information about books from several different sources.",
   "main": "index.js",
   "scripts": {
-    "test": "xo && nyc ava -v test/*.js"
+    "lint": "xo",
+    "test": "ava",
+    "coverage": "nyc ava -t",
+    "check-duplicate-code": "jsinspect -t 20 src"
   },
   "keywords": [
     "book",
