@@ -66,10 +66,11 @@
     }
   },
   "ava": {
+    "files": [
+      "test/*.js"
+    ],
     "concurrency": 5,
     "failFast": false,
-    "failWithoutAssertions": false,
-    "tap": true,
     "verbose": true,
     "compileEnhancements": false
   }
