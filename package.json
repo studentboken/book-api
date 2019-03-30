@@ -2,7 +2,10 @@
   "name": "book-api",
   "version": "2.1.0",
   "description": "An API to retrieve information about books from several different sources.",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "bin": {
+    "book-api": "./lib/cli.js"
+  },
   "scripts": {
     "lint": "xo",
     "test": "ava",
@@ -27,7 +30,8 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "cheerio": "^1.0.0-rc.2"
+    "cheerio": "^1.0.0-rc.2",
+    "yargs": "^13.2.2"
   },
   "xo": {
     "space": 2,
