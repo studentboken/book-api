@@ -13,6 +13,30 @@ npm install book-api
 
 ##### Quickstart
 
+###### CLI
+
+```Bash
+# Install
+> npm install -g book-api
+# Use
+> book-api --help
+
+book-api <query>
+
+Search for the query
+
+Options:
+  --help                Show help                                      [boolean]
+  --version             Show version number                            [boolean]
+  --fetch-all           Fetch all search results                       [boolean]
+  --search-all-sources  Search all sources                             [boolean]
+  --search-results, -n  Number of search results to include. Is not guaranteed
+                        to be honoured                                  [number]
+  --output, -o          Path to the output file
+
+```
+
+###### Library
 
 ```JavaScript
 const {Akademibokhandeln, Adlibris} = require('book-api');
