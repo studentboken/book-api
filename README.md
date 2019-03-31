@@ -33,6 +33,7 @@ Options:
   --search-results, -n  Number of search results to include. Is not guaranteed
                         to be honoured                                  [number]
   --output, -o          Path to the output file
+  --debug, -d           Run in debugging mode                          [boolean]
 
 ```
 
