@@ -21,7 +21,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/alexgustafsson/book-api.git"
+    "url": "git://github.com/studentboken/book-api.git"
   },
   "author": "Alex Gustafsson",
   "license": "ISC",
