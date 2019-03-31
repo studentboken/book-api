@@ -1,10 +1,10 @@
 {
   "name": "book-api",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "An API to retrieve information about books from several different sources.",
   "main": "lib/index.js",
   "bin": {
-    "book-api": "./lib/cli.js"
+    "book-api": "./src/cli.js"
   },
   "scripts": {
     "dev": "DEBUG=book-api:* node src/cli.js",
