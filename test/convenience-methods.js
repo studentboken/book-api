@@ -1,7 +1,7 @@
 const test = require('ava');
 
-const {search} = require('../lib/convenience-methods');
-const Book = require('../lib/book');
+const {search} = require('../src/convenience-methods');
+const Book = require('../src/book');
 
 test('Can search for books using predefined order', async t => {
   // The query 'test' is known to have results - expect this to be true
@@ -26,7 +26,6 @@ test('Can search for all books', async t => {
   if (resultIsArray) {
     const resultingSources = result.map((book => book.url.match(/\.([^.]*)\./)[1]))
       .reduce((res, source) => res.includes(source) ? res : [...res, source], []);
-    console.log(resultingSources);
     t.true(resultingSources.length > 1);
   }
 });

@@ -1,7 +1,7 @@
 const test = require('ava');
 
-const Book = require('../lib/book');
-const Source = require('../lib/source');
+const Book = require('../src/book');
+const Source = require('../src/source');
 
 test('Non-implemented source class throws on search', async t => {
   const source = new Source();

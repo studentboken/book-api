@@ -1,8 +1,8 @@
 const test = require('ava');
 
-const Adlibris = require('../lib/adlibris');
-const Akademibokhandeln = require('../lib/akademibokhandeln');
-const Book = require('../lib/book');
+const Adlibris = require('../src/adlibris');
+const Akademibokhandeln = require('../src/akademibokhandeln');
+const Book = require('../src/book');
 
 async function testSource(t, Source) {
   const source = new Source();
