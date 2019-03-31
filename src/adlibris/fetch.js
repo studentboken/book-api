@@ -1,8 +1,11 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
+const debug = require('debug')('book-api:adlibris-fetch');
 
 function fetch(book) {
+  debug(`Fetching book with url ${book.url}`);
   return axios.get(book.url).then(response => {
+    debug('Fetched book. Formatting');
     const $ = cheerio.load(response.data);
     const description = $('#product-description').text().trim();
     const info = $('.product-info-panel__attributes.container').text().trim().replace(/\s*\n\s*/g, '\n').split('\n');
@@ -45,6 +48,7 @@ function fetch(book) {
     book.description = description;
     book.categories = formattedCategories;
 
+    debug('Formatted book');
     return Promise.resolve(book);
   });
 }

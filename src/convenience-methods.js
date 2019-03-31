@@ -1,3 +1,5 @@
+const debug = require('debug')('book-api:convenience-methods');
+
 const sources = [
   require('./adlibris'),
   require('./akademibokhandeln')
@@ -17,13 +19,17 @@ async function search(query, options = {fetchAll: false, searchAllSources: false
 
   for (const Source of sources) {
     const source = new Source();
-    // All search results
+    debug(`Fetching all results from ${source.constructor.name}`);
     const results = await source.search(query); /* eslint no-await-in-loop: "off" */
-    // Requested search results
-    let filteredResults = results.slice(0, options.searchResults || results.length);
 
-    if (options.fetchAll)
+    const resultsToKeep = options.searchResults || results.length;
+    debug(`Filtering ${resultsToKeep} results`)
+    let filteredResults = results.slice(0, resultsToKeep);
+
+    if (options.fetchAll) {
+      debug(`Fully fetching ${resultsToKeep} books`);
       filteredResults = await Promise.all(filteredResults.map(x => source.fetch(x)));
+    }
 
     books.push(...filteredResults);
 

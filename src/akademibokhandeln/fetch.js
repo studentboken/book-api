@@ -1,10 +1,13 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
+const debug = require('debug')('book-api:akademibokhandeln-fetch');
 
 const {parseLanguage} = require('../utils');
 
 function fetch(book) {
+  debug(`Fetching book with url ${book.url}`);
   return axios.get(book.url).then(response => {
+    debug('Fetched book. Formatting');
     const $ = cheerio.load(response.data);
 
     const category = $('.product-details__topic').text().trim();
@@ -35,6 +38,7 @@ function fetch(book) {
     book.categories = [category];
     book.description = description.replace(/<br *\/?>/g, '\n');
 
+    debug('Formatted book');
     return Promise.resolve(book);
   });
 }

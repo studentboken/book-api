@@ -7,10 +7,13 @@
     "book-api": "./lib/cli.js"
   },
   "scripts": {
+    "dev": "DEBUG=book-api:* node src/cli.js",
+    "start": "NODE_ENV=production node src/cli.js",
     "lint": "xo",
     "test": "ava",
     "coverage": "nyc ava -t",
-    "check-duplicate-code": "jsinspect -t 20 lib"
+    "check-duplicate-code": "jsinspect -t 20 src",
+    "build": "./build.sh"
   },
   "keywords": [
     "book",
@@ -31,6 +34,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "cheerio": "^1.0.0-rc.2",
+    "debug": "^4.1.1",
     "yargs": "^13.2.2"
   },
   "xo": {

@@ -1,11 +1,14 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
+const debug = require('debug')('book-api:akademibokhandeln-search');
 
 const {parseFormat, flatten} = require('../utils');
 const Book = require('../book');
 
 function fetchResults(url, options) {
+  debug(`Fetching results for url ${url}`);
   return axios.get(url, options).then(response => {
+    debug('Fetched results. Formatting');
     const $ = cheerio.load(response.data.productGridHTML);
     const bindings = response.data.searchFilterData.facets.binding.map(x => parseFormat(x.name));
 
@@ -42,12 +45,14 @@ function fetchResults(url, options) {
       }
     });
 
+    debug('Formatted results');
     return Promise.resolve(books);
   });
 }
 
 function search(query, {items}) {
   const pages = Math.ceil(items / 20);
+  debug(`Searching for ${query} and retrieving ${pages} pages (${items} items)`);
 
   const fetches = [];
   for (let page = 1; page <= pages; page++) {
