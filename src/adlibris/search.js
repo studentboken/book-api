@@ -37,7 +37,7 @@ function fetchResults(url, options) {
       book.language = parseLanguage(language);
       book.isbn = isbn.split(' ')[1] || null;
       book.marketPrices.push({
-        value: price,
+        value: Number(price),
         currency: 'sek',
         source: 'Adlibris'
       });
