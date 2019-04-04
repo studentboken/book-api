@@ -21,6 +21,10 @@ function fetchResults(url, options) {
       const url = $(element).find('.search-result__product__name').attr('href');
 
       const [formfactor, published, language, isbn] = form;
+      // Books in the search page of Adlibris always have the formfactor given. Other products,
+      // however do not. We're only interested in books - discard any other products
+      if (!formfactor)
+        return;
 
       const book = new Book();
       book.cover = {url: image};
