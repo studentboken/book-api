@@ -1,6 +1,6 @@
 {
   "name": "book-api",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "An API to retrieve information about books from several different sources.",
   "main": "lib/index.js",
   "bin": {
