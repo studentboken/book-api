@@ -21,7 +21,7 @@ class Book {
     // Title of the book - always available
     this.title = null;
 
-    // Array of authors of the book - always available
+    // Array of authors of the book - always available, but can be empty
     this.authors = [];
 
     // Sources where the book is found - always available
@@ -30,7 +30,7 @@ class Book {
     // source.name : null // The source's name
     this.sources = [];
 
-    // Formfactor of the book, such as paperback - always available
+    // Formfactor of the book, such as paperback - always available but could be null
     this.formfactor = null;
 
     // Description of the book - available in part for Adlibris, in full by fetching.
@@ -51,7 +51,7 @@ class Book {
     this.pages = null;
 
     // The language of the book (ISO 639-1) - always available for Adlibris,
-    // available after fetching for Akademibokhandeln
+    // available after fetching for Akademibokhandeln - both sources can however be 'unknown'
     this.language = null;
 
     // Weight of the book - available after fetching for Adlibris,
