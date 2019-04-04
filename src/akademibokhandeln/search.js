@@ -42,7 +42,7 @@ function fetchResults(url, options) {
           book.images.push({url: item['imgSmall']});
         }
         book.title = item['title'];
-        book.authors = item['authors'];
+        book.authors = item['authors'].filter(x => x && x !== '');
         book.sources.push({
           url: 'https://www.akademibokhandeln.se' + item['url'],
           source: 'Akademibokhandeln'

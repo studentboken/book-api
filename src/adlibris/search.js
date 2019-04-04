@@ -30,7 +30,7 @@ function fetchResults(url, options) {
         source: 'Adlibris'
       });
       book.title = title;
-      book.authors = authors;
+      book.authors = authors.filter(x => x && x !== '');
       book.description = description;
       book.formfactor = parseFormat(formfactor);
       book.published = published ? new Date(published) : null;
