@@ -71,11 +71,11 @@ class Book {
     this.cover = this.cover || book.cover;
     this.images.push(...book.images);
     this.title = this.title || book.title;
-    this.authors = this.authors.length > 0 ? this.authors : book.authors;
+    this.authors = [...new Set([...this.authors, ...book.authors])];
     this.sources.push(...book.sources);
     this.formfactor = this.formfactor || book.formfactor;
     this.description = this.description || book.description;
-    this.categories = this.categories.length > 0 ? this.categories : book.categories;
+    this.categories = [...new Set([...this.categories, ...book.categories])];
     this.published = this.published || book.published;
     this.publisher = this.publisher || book.publisher;
     this.pages = this.pages || book.pages;
