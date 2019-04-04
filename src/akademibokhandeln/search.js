@@ -2,7 +2,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const debug = require('debug')('book-api:akademibokhandeln-search');
 
-const {parseFormat, flatten} = require('../utils');
+const {parseFormfactor, flatten} = require('../utils');
 const Book = require('../book');
 
 function fetchResults(url, options) {
@@ -10,7 +10,7 @@ function fetchResults(url, options) {
   return axios.get(url, options).then(response => {
     debug('Fetched results. Formatting');
     const $ = cheerio.load(response.data.productGridHTML);
-    const bindings = response.data.searchFilterData.facets.binding.map(x => parseFormat(x.name));
+    const bindings = response.data.searchFilterData.facets.binding.map(x => parseFormfactor(x.name));
 
     // Lacks category:
     // category: topics[item['category']], Note: the category always seem to be '1'

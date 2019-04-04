@@ -1,5 +1,8 @@
 // ISO 639-1 standard language codes
 function parseLanguage(language) {
+  if (!language)
+    return null;
+
   if (language.match(/svenska/i))
     return 'sv';
 
@@ -24,17 +27,20 @@ function parseLanguage(language) {
   return language;
 }
 
-function parseFormat(format) {
-  if (format.match(/häftad|falsad/i))
+function parseFormfactor(formfactor) {
+  if (!formfactor)
+    return null;
+
+  if (formfactor.match(/häftad|falsad/i))
     return 'paperback';
 
-  if (format.match(/inbunden/i))
+  if (formfactor.match(/inbunden/i))
     return 'hardcover';
 
-  if (format.match(/ljudbok/i))
+  if (formfactor.match(/ljudbok/i))
     return 'audio book';
 
-  if (format.match(/pocket/i))
+  if (formfactor.match(/pocket/i))
     return 'pocket';
 
   return null;
@@ -46,6 +52,6 @@ function flatten(arrays) {
 
 module.exports = {
   parseLanguage,
-  parseFormat,
+  parseFormfactor,
   flatten
 };

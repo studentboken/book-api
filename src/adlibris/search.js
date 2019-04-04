@@ -2,7 +2,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const debug = require('debug')('book-api:adlibris-search');
 
-const {parseFormat, parseLanguage} = require('../utils');
+const {parseFormfactor, parseLanguage} = require('../utils');
 const Book = require('../book');
 
 function fetchResults(url, options) {
@@ -32,10 +32,10 @@ function fetchResults(url, options) {
       book.title = title;
       book.authors = authors.filter(x => x && x !== '');
       book.description = description;
-      book.formfactor = parseFormat(formfactor);
+      book.formfactor = parseFormfactor(formfactor);
       book.published = published ? new Date(published) : null;
       book.language = parseLanguage(language);
-      book.isbn = isbn.split(' ')[1] || null;
+      book.isbn = isbn ? isbn.split(' ')[1] || null : null;
       book.marketPrices.push({
         value: Number(price),
         currency: 'sek',
