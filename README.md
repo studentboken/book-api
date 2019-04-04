@@ -57,39 +57,43 @@ source.search('Test Driven Development')
 {
   "marketPrices": [
     {
-      "value": 339,
+      "value": 443,
       "currency": "sek",
-      "source": "Akademibokhandeln"
+      "source": "Adlibris"
     }
   ],
-  "isbn": "9781934356623",
+  "isbn": "9780321146533",
   "cover": {
-    "url": "https://bilder.akademibokhandeln.se/images_akb/[...]"
+    "url": "https://s2.adlibris.com/images/824962/[...]"
   },
   "images": [
-    "https://bilder.akademibokhandeln.se/images_akb/9781934356623_383/[...]",
-    "https://bilder.akademibokhandeln.se/images_akb/9781934356623_200/[...]"
+    {
+      "url": "https://s2.adlibris.com/images/824962/[...]"
+    }
   ],
-  "title": "Test Driven Development for Embedded C",
+  "title": "Test Driven Development",
   "authors": [
-    "James W Grenning"
+    "Kent Beck"
   ],
   "sources": [
     {
-      "url": "https://www.akademibokhandeln.se/bok/[...]",
-      "name": "Akademibokhandeln"
+      "url": "https://www.adlibris.com/se/bok/[...]",
+      "name": "Adlibris"
     }
   ],
   "formfactor": "paperback",
-  "description": "TDD is a modern programming practice C developers need to know [...]",
+  "description": "Quite simply, test-driven development is meant to eliminate fear in [...]",
   "categories": [
-    "Data & IT"
+    "Datorer & IT",
+    "Affärstillämpningar",
+    "Programmering",
+    "Programvaruteknik"
   ],
-  "published": "2011-05-09T00:00:00.000Z",
-  "publisher": "THE PRAGMATIC BOOKSHELF",
-  "pages": 351,
+  "published": "2002-11-01T00:00:00.000Z",
+  "publisher": "Addison-Wesley Educational Publishers Inc",
+  "pages": 240,
   "language": "en",
-  "weight": null
+  "weight": "418 gram"
 }
 ```
 
@@ -106,7 +110,8 @@ const {
   Akademibokhandeln, // Source
   Adlibris, // Source
   sources, // Enumerable array of the sources above
-  search // Convenience method for searching for books
+  search, // Convenience method for searching for queries
+  searchAll // Convenience method for searching for multiple different queries
 } = require('book-api');
 ```
 
@@ -122,7 +127,23 @@ const {
 * @param {Number} options.searchResults - Number of search results to include. Is not guaranteed to be honoured. Defaults to 0 (predefined).
 * @returns {Array} Array of books.
 */
-async function search(query, options) {
+async function search(query, options = {}) {
+  ...
+}
+
+/**
+* Search asynchronously for a query using sensible source priority.
+* @param {Array} queries - Array of queries to search for.
+* @param {Object} options - Optional options.
+* @param {Boolean} options.fetchAll - Fetch all search results. Defaults to false.
+* @param {Boolean} options.searchAllSources - Search all sources. Defaults to false.
+* @param {Number} options.searchResults - Number of search results to include. Is not guaranteed to be honoured. Defaults to 0 (predefined).
+* @param {Number} options.parallelQueries - The number of queries to process simultaneously.
+* @param {Number} options.minimumDelay - The minimum number of milliseconds to wait between requests.
+* @param {Number} options.maximumDelay - The maximum number of milliseconds to wait between requests.
+* @returns {Array} Array of books.
+*/
+async function searchAll(queries, options = {}) {
   ...
 }
 ```
@@ -155,7 +176,7 @@ class Book {
     // Title of the book - always available
     this.title = null;
 
-    // Array of authors of the book - always available
+    // Array of authors of the book - always available, but can be empty
     this.authors = [];
 
     // Sources where the book is found - always available
@@ -164,7 +185,7 @@ class Book {
     // source.name : null // The source's name
     this.sources = [];
 
-    // Formfactor of the book, such as paperback - always available
+    // Formfactor of the book, such as paperback - always available but could be null
     this.formfactor = null;
 
     // Description of the book - available in part for Adlibris, in full by fetching.
@@ -185,7 +206,7 @@ class Book {
     this.pages = null;
 
     // The language of the book (ISO 639-1) - always available for Adlibris,
-    // available after fetching for Akademibokhandeln
+    // available after fetching for Akademibokhandeln - both sources can however be 'unknown'
     this.language = null;
 
     // Weight of the book - available after fetching for Adlibris,
