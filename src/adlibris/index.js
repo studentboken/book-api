@@ -12,7 +12,7 @@ class Adlibris extends Source {
   fetch(book) {
     if (!book)
       return Promise.reject(new Error('No book given'));
-    const source = [...book.sources.filter(x => x.source === 'Adlibris'), null][0];
+    const source = [...book.sources.filter(x => x.name === 'Adlibris'), null][0];
     if (!source)
       return Promise.reject(new Error('No url for book'));
     return fetch(book, source.url);

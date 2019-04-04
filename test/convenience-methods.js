@@ -25,7 +25,7 @@ test('Can search for all books', async t => {
 
   if (resultIsArray) {
     // Unique sources found
-    const resultingSources = [...new Set(result.reduce((res, x) => [...res, ...x.sources.map(y => y.source)], []))];
+    const resultingSources = [...new Set(result.reduce((res, x) => [...res, ...x.sources.map(y => y.name)], []))];
     t.true(resultingSources.length > 1);
   }
 });

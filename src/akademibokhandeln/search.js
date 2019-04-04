@@ -45,7 +45,7 @@ function fetchResults(url, options) {
         book.authors = item['authors'].filter(x => x && x !== '');
         book.sources.push({
           url: 'https://www.akademibokhandeln.se' + item['url'],
-          source: 'Akademibokhandeln'
+          name: 'Akademibokhandeln'
         });
         book.formfactor = bindings[item['typeOfBinding']];
 

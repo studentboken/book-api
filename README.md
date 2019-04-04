@@ -77,7 +77,7 @@ source.search('Test Driven Development')
   "sources": [
     {
       "url": "https://www.akademibokhandeln.se/bok/[...]",
-      "source": "Akademibokhandeln"
+      "name": "Akademibokhandeln"
     }
   ],
   "formfactor": "paperback",
@@ -161,7 +161,7 @@ class Book {
     // Sources where the book is found - always available
     // Each item is a source:
     // source.url : null // URL to the book on its respective site
-    // source.source : null // The source's name
+    // source.name : null // The source's name
     this.sources = [];
 
     // Formfactor of the book, such as paperback - always available

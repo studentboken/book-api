@@ -27,7 +27,7 @@ function fetchResults(url, options) {
       book.images.push(book.cover);
       book.sources.push({
         url: 'https://www.adlibris.com' + url,
-        source: 'Adlibris'
+        name: 'Adlibris'
       });
       book.title = title;
       book.authors = authors.filter(x => x && x !== '');
