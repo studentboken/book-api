@@ -29,7 +29,7 @@ function parseLanguage(language) {
 
 function parseFormfactor(formfactor) {
   if (!formfactor)
-    return null;
+    return 'unknown';
 
   if (formfactor.match(/häftad|falsad/i))
     return 'paperback';
@@ -43,7 +43,13 @@ function parseFormfactor(formfactor) {
   if (formfactor.match(/pocket/i))
     return 'pocket';
 
-  return null;
+  if (formfactor.match(/kartonnage/i))
+    return 'cartonnage';
+
+  if (formfactor.match(/danskband/i))
+    return 'paperback';
+
+  return 'unknown';
 }
 
 function flatten(arrays) {
