@@ -35,11 +35,11 @@ function fetchResults(url, options) {
         book.isbn = item['isbn'];
         if (item['imgMedium']) {
           book.cover = {url: item['imgMedium']};
-          book.images.push(item['imgMedium']);
+          book.images.push({url: item['imgMedium']});
         }
         if (item['imgSmall']) {
           book.cover = book.cover || {url: item['imgSmall']};
-          book.images.push(item['imgSmall']);
+          book.images.push({url: item['imgSmall']});
         }
         book.title = item['title'];
         book.authors = item['authors'];

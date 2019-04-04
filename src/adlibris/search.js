@@ -39,7 +39,7 @@ function fetchResults(url, options) {
       book.marketPrices.push({
         value: price,
         currency: 'sek',
-        source: 'Akademibokhandeln'
+        source: 'Adlibris'
       });
 
       books.push(book);
