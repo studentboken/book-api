@@ -4,9 +4,9 @@ const debug = require('debug')('book-api:akademibokhandeln-fetch');
 
 const {parseLanguage} = require('../utils');
 
-function fetch(book) {
-  debug(`Fetching book with url ${book.url}`);
-  return axios.get(book.url).then(response => {
+function fetch(book, url) {
+  debug(`Fetching book with url ${url}`);
+  return axios.get(url).then(response => {
     debug('Fetched book. Formatting');
     const $ = cheerio.load(response.data);
 
@@ -36,7 +36,7 @@ function fetch(book) {
     book.pages = Number(result['Antal sidor']) || null;
     book.language = parseLanguage(result['Språk']);
     book.categories = [category];
-    book.description = description.replace(/<br *\/?>/g, '\n');
+    book.description = description.replace(/<br[^/>]*\/?>/g, '\n');
 
     debug('Formatted book');
     return Promise.resolve(book);

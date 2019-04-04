@@ -24,8 +24,8 @@ test('Can search for all books', async t => {
   t.true(resultIsArray);
 
   if (resultIsArray) {
-    const resultingSources = result.map((book => book.url.match(/\.([^.]*)\./)[1]))
-      .reduce((res, source) => res.includes(source) ? res : [...res, source], []);
+    // Unique sources found
+    const resultingSources = [...new Set(result.reduce((res, x) => [...res, ...x.sources.map(y => y.source)], []))];
     t.true(resultingSources.length > 1);
   }
 });

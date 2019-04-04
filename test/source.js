@@ -12,5 +12,5 @@ test('Non-implemented source class throws on search', async t => {
 test('Non-implemented source class throws on fetch', async t => {
   const source = new Source();
   const error = await t.throwsAsync(source.fetch(new Book()));
-  t.is('Error fetching book <null>: Not implemented', error.message);
+  t.is('Error fetching book: Not implemented', error.message);
 });

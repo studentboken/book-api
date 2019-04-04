@@ -9,11 +9,13 @@ class Akademibokhandeln extends Source {
     }, options));
   }
 
-  fetch(item) {
-    if (!item || !item.url)
-      return Promise.reject(new Error('No url for item'));
-
-    return fetch(item);
+  fetch(book) {
+    if (!book)
+      return Promise.reject(new Error('No book given'));
+    const source = [...book.sources.filter(x => x.source === 'Akademibokhandeln'), null][0];
+    if (!source)
+      return Promise.reject(new Error('No url for book'));
+    return fetch(book, source.url);
   }
 }
 

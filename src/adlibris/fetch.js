@@ -2,9 +2,9 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const debug = require('debug')('book-api:adlibris-fetch');
 
-function fetch(book) {
-  debug(`Fetching book with url ${book.url}`);
-  return axios.get(book.url).then(response => {
+function fetch(book, url) {
+  debug(`Fetching book with url ${url}`);
+  return axios.get(url).then(response => {
     debug('Fetched book. Formatting');
     const $ = cheerio.load(response.data);
     const description = $('#product-description').text().trim();

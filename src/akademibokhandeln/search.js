@@ -27,19 +27,27 @@ function fetchResults(url, options) {
 
         const book = new Book();
 
-        book.price.value = Number(item['ourPrice']);
-        book.price.unit = 'sek';
-        book.isbn = item['isbn'];
-        book.cover = Object.assign(book.cover, {
-          small: item['imgSmall'],
-          medium: item['imgMedium']
+        book.marketPrices.push({
+          value: Number(item['ourPrice']),
+          currency: 'sek',
+          source: 'Akademibokhandeln'
         });
+        book.isbn = item['isbn'];
+        if (item['imgMedium']) {
+          book.cover = {url: item['imgMedium']};
+          book.images.push(item['imgMedium']);
+        }
+        if (item['imgSmall']) {
+          book.cover = book.cover || {url: item['imgSmall']};
+          book.images.push(item['imgSmall']);
+        }
         book.title = item['title'];
         book.authors = item['authors'];
-        book.url = 'https://www.akademibokhandeln.se' + item['url'];
+        book.sources.push({
+          url: 'https://www.akademibokhandeln.se' + item['url'],
+          source: 'Akademibokhandeln'
+        });
         book.formfactor = bindings[item['typeOfBinding']];
-        book.description = null;
-        book.categories = [];
 
         books.push(book);
       }

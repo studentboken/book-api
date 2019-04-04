@@ -23,8 +23,12 @@ function fetchResults(url, options) {
       const [formfactor, published, language, isbn] = form;
 
       const book = new Book();
-      book.cover = Object.assign(book.cover, {small: image});
-      book.url = 'https://www.adlibris.com' + url;
+      book.cover = {url: image};
+      book.images.push(book.cover);
+      book.sources.push({
+        url: 'https://www.adlibris.com' + url,
+        source: 'Adlibris'
+      });
       book.title = title;
       book.authors = authors;
       book.description = description;
@@ -32,8 +36,11 @@ function fetchResults(url, options) {
       book.published = published ? new Date(published) : null;
       book.language = parseLanguage(language);
       book.isbn = isbn.split(' ')[1] || null;
-      book.price.value = price;
-      book.price.currency = 'sek';
+      book.marketPrices.push({
+        value: price,
+        currency: 'sek',
+        source: 'Akademibokhandeln'
+      });
 
       books.push(book);
     });
