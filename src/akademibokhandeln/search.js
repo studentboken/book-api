@@ -10,7 +10,6 @@ function fetchResults(url, options) {
   return axios.get(url, options).then(response => {
     debug('Fetched results. Formatting');
     const $ = cheerio.load(response.data.productGridHTML);
-    const bindings = response.data.searchFilterData.facets.binding;
 
     // Lacks category:
     // category: topics[item['category']], Note: the category always seem to be '1'
@@ -25,18 +24,17 @@ function fetchResults(url, options) {
       if (cartItem !== null && cartItem.length >= 1) {
         const item = JSON.parse(cartItem[1]);
 
-        // Books in the search page of Akademibokhandeln always have the formfactor given. Other products,
-        // however do not. We're only interested in books - discard any other products
-        if (!bindings[item['typeOfBinding']])
-          return;
-
         const book = new Book();
 
-        book.marketPrices.push({
-          value: Number(item['ourPrice']),
-          currency: 'sek',
-          source: 'Akademibokhandeln'
-        });
+        const price = item['ourPrice'] || item['regularPrice'];
+
+        if (price) {
+          book.marketPrices.push({
+            value: Number(price),
+            currency: 'sek',
+            source: 'Akademibokhandeln'
+          });
+        }
         book.isbn = item['isbn'];
         if (item['imgMedium']) {
           book.cover = {url: item['imgMedium']};
@@ -52,7 +50,7 @@ function fetchResults(url, options) {
           url: 'https://www.akademibokhandeln.se' + item['url'],
           name: 'Akademibokhandeln'
         });
-        book.formfactor = parseFormfactor(bindings[item['typeOfBinding']].name);
+        book.formfactor = parseFormfactor(item['presentableBinding']);
 
         books.push(book);
       }

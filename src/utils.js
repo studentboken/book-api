@@ -49,6 +49,9 @@ function parseFormfactor(formfactor) {
   if (formfactor.match(/danskband/i))
     return 'paperback';
 
+  if (formfactor.match(/CD-skiva/i))
+    return 'cd';
+
   return 'unknown';
 }
 

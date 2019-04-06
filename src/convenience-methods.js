@@ -39,17 +39,22 @@ async function search(query, options = {}) {
     debug(`Searching on ${source.constructor.name}`);
     const results = await source.search(query); /* eslint no-await-in-loop: "off" */
 
+    if (results.length === 0) {
+      debug(`No results for ${query} on ${source.constructor.name}`);
+      continue;
+    }
+
     const resultsToKeep = options.searchResults || results.length;
     debug(`Filtering ${resultsToKeep} results`);
     let filteredResults = results.slice(0, resultsToKeep);
 
-    if (options.fetchAll) {
+    if (options.fetchAll && filteredResults.length > 0) {
       debug(`Fully fetching ${resultsToKeep} books`);
       filteredResults = await Promise.all(filteredResults.map(x => source.fetch(x)));
     }
 
     for (const book of filteredResults) {
-      // Try to complement data if a similar book already exists
+      // Try to complement data if the same book already exists (based on ISBN)
       if (book.isbn) {
         const existingIndex = books.findIndex(x => x.isbn === book.isbn);
         if (existingIndex === -1)
