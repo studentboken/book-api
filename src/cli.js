@@ -5,19 +5,29 @@ const fs = require('fs');
 const debug = require('debug')('book-api:app');
 const yargs = require('yargs');
 
-const {searchAll} = require('./convenience-methods');
+const {searchAll, wait} = require('./convenience-methods');
 
 async function main(argv) {
   if (argv.debug)
     require('debug').enable('book-api:*');
-  const books = await searchAll(argv.query.split(','), argv);
 
-  if (argv.output) {
-    debug('Writing results to file');
-    fs.writeFileSync(argv.output, JSON.stringify(books, null, 2));
-  } else {
-    console.log(JSON.stringify(books, null, 2));
+  const books = [];
+
+  for await (const batch of searchAll(argv.query.split(','), argv)) {
+    debug(`Got batch of ${batch.length}`);
+    books.push(...batch);
+
+    if (argv.output) {
+      debug('Writing intermediate result to output');
+      fs.writeFile(argv.output, JSON.stringify(books, null, 2), () => {});
+    }
+
+    debug('Waiting between batches');
+    await wait(argv.minimumDelay, argv.maximumDelay); /* eslint no-await-in-loop: "off" */
   }
+
+  if (!argv.output)
+    console.log(JSON.stringify(books, null, 2));
 }
 
 // Parse command line options and run main

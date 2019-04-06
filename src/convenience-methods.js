@@ -76,42 +76,29 @@ async function search(query, options = {}) {
 * @param {Boolean} options.searchAllSources - Search all sources. Defaults to false.
 * @param {Number} options.searchResults - Number of search results to include. Is not guaranteed to be honoured. Defaults to 0 (predefined).
 * @param {Number} options.parallelQueries - The number of queries to process simultaneously.
-* @param {Number} options.minimumDelay - The minimum number of milliseconds to wait between requests.
-* @param {Number} options.maximumDelay - The maximum number of milliseconds to wait between requests.
 * @returns {Array} Array of books.
 */
-async function searchAll(queries, options = {}) {
+async function * searchAll(queries, options = {}) {
   options = Object.assign({
     fetchAll: false,
     searchAllSources: false,
     searchResults: 0,
-    parallelQueries: 3,
-    minimumDelay: 100,
-    maximumDelay: 5000
+    parallelQueries: 3
   }, options);
-
-  const books = [];
 
   const batches = [];
   for (let i = 0; i < queries.length; i += options.parallelQueries)
     batches.push(queries.slice(i, i + options.parallelQueries));
 
-  let completedBatches = 0;
   for (const batch of batches) {
     debug(`Processing ${batch.length} queries`);
-    const results = await Promise.all(batch.map(queries => search(queries, options)));
-    books.push(...results.flat(2)); /* eslint no-await-in-loop: "off" */
-
-    if (++completedBatches < batches.length) {
-      debug('Waiting between queries');
-      await wait(options.minimumDelay, options.maximumDelay); /* eslint no-await-in-loop: "off" */
-    }
+    const results = await Promise.all(batch.map(query => search(query, options))); /* eslint no-await-in-loop: "off" */
+    yield results.flat(2);
   }
-
-  return books;
 }
 
 module.exports = {
   search,
-  searchAll
+  searchAll,
+  wait
 };

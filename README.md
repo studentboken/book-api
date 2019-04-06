@@ -138,13 +138,19 @@ async function search(query, options = {}) {
 * @param {Boolean} options.fetchAll - Fetch all search results. Defaults to false.
 * @param {Boolean} options.searchAllSources - Search all sources. Defaults to false.
 * @param {Number} options.searchResults - Number of search results to include. Is not guaranteed to be honoured. Defaults to 0 (predefined).
-* @param {Number} options.parallelQueries - The number of queries to process simultaneously.
-* @param {Number} options.minimumDelay - The minimum number of milliseconds to wait between requests.
-* @param {Number} options.maximumDelay - The maximum number of milliseconds to wait between requests.
+* @param {Number} options.parallelQueries - The number of queries to process simultaneously. requests.
 * @returns {Array} Array of books.
 */
-async function searchAll(queries, options = {}) {
+async function * searchAll(queries, options = {}) {
   ...
+}
+
+// Example usage
+for await (const batch of searchAll(['test', 'queries'])) {
+  console.log(`Got batch of ${batch.length}`);
+  console.log(batch);
+  console.log('Waiting between batches');
+  await wait(minimumDelay, maximumDelay);
 }
 ```
 
