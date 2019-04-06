@@ -32,6 +32,12 @@ Options:
   --search-all-sources  Search all sources                             [boolean]
   --search-results, -n  Number of search results to include. Is not guaranteed
                         to be honoured                                  [number]
+  --parallel-queries    The number of queries to process simultaneously
+                                                                    [default: 3]
+  --minimum-delay       The minimum number of milliseconds to wait between
+                        requests                                  [default: 100]
+  --maximum-delay       The maximum number of milliseconds to wait between
+                        requests                                 [default: 5000]
   --output, -o          Path to the output file
   --debug, -d           Run in debugging mode                          [boolean]
 
