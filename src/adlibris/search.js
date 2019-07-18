@@ -2,7 +2,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const debug = require('debug')('book-api:adlibris-search');
 
-const {parseFormfactor, parseLanguage} = require('../utils');
+const {parseFormfactor, parseLanguage, sanitizeTitle} = require('../utils');
 const Book = require('../book');
 
 function fetchResults(url, options) {
@@ -33,7 +33,7 @@ function fetchResults(url, options) {
         url: 'https://www.adlibris.com' + url,
         name: 'Adlibris'
       });
-      book.title = title;
+      book.title = sanitizeTitle(title);
       book.authors = authors.filter(x => x && x !== '');
       book.description = description;
       book.formfactor = parseFormfactor(formfactor);

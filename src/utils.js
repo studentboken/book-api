@@ -59,8 +59,25 @@ function flatten(arrays) {
   return arrays.reduce((res, x) => res.concat(x), []);
 }
 
+function sanitizeTitle(title) {
+  // Some books include a digital product, disregard this
+  title = title.replace(/\(bok \+ digital produkt\)/gi, '');
+
+  // Some books have a title such as 'Mathematics : 101', remove spaces before ':'
+  title = title.replace(/ +:/, ':');
+
+  // Due to the above removal, some titles may have trailing commas, hyphens etc
+  title = title.replace(/[-:,().;] *$/, '');
+
+  // Remove any leading or trailing whitespace
+  title = title.trim();
+
+  return title;
+}
+
 module.exports = {
   parseLanguage,
   parseFormfactor,
-  flatten
+  flatten,
+  sanitizeTitle
 };

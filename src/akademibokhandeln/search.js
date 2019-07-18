@@ -2,7 +2,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const debug = require('debug')('book-api:akademibokhandeln-search');
 
-const {parseFormfactor, flatten} = require('../utils');
+const {parseFormfactor, flatten, sanitizeTitle} = require('../utils');
 const Book = require('../book');
 
 function fetchResults(url, options) {
@@ -44,7 +44,7 @@ function fetchResults(url, options) {
           book.cover = book.cover || {url: item['imgSmall']};
           book.images.push({url: item['imgSmall']});
         }
-        book.title = item['title'];
+        book.title = sanitizeTitle(item['title']);
         book.authors = item['authors'].filter(x => x && x !== '');
         book.sources.push({
           url: 'https://www.akademibokhandeln.se' + item['url'],
