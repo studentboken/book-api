@@ -63,6 +63,9 @@ function sanitizeTitle(title) {
   // Some books include a digital product, disregard this
   title = title.replace(/\(bok \+ digital produkt\)/gi, '');
 
+  // Some books have title like '[With CDRom]', disregard this
+  title = title.repalce(/\[with cdrom\]/gi, '');
+
   // Some books have a title such as 'Mathematics : 101', remove spaces before ':'
   title = title.replace(/ +:/, ':');
 
