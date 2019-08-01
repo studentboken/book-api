@@ -24,7 +24,7 @@
     "url": "git://github.com/studentboken/book-api.git"
   },
   "author": "Alex Gustafsson",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "ava": "^1.4.1",
     "jsinspect": "^0.12.7",
