@@ -1,0 +1,46 @@
+image: node:12-stretch
+
+stages:
+  - dependencyCheck
+  - staticAnalysis
+  - test
+  - build
+
+before_script:
+  - npm install
+  - apt-get update; apt-get install curl
+  - mkdir -p build/badges
+
+cache:
+  paths:
+    - node_modules
+
+checkDependencies:
+  stage: dependencyCheck
+  script: ci/check-dependencies.sh
+  artifacts:
+    paths:
+      - build/badges/*.svg
+    when: always
+  allow_failure: true
+  only:
+    - scheduled
+
+lint:
+  stage: staticAnalysis
+  script: npm run-script lint
+  allow_failure: true
+
+checkDuplicateCode:
+  stage: staticAnalysis
+  script: ci/check-duplicate-code.sh
+  allow_failure: true
+
+test:
+  stage: test
+  script: ./ci/test.sh
+
+coverage:
+  stage: test
+  script: ./ci/coverage.sh
+  allow_failure: true
