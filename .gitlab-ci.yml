@@ -24,7 +24,7 @@ checkDependencies:
     when: always
   allow_failure: true
   only:
-    - scheduled
+    - schedules
 
 lint:
   stage: staticAnalysis
