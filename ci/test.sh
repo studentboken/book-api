@@ -5,8 +5,13 @@ exitCode=$?
 echo "$output"
 
 if [[ ! $exitCode -eq 0 ]]; then
-  echo -e "\e[31mTests failed with error code $exitCode\e[0m"
-  exit $exitCode
+  if [[ $(echo "$output" | grep -c "Couldn't find any files to test") -gt 0 ]]; then
+    echo -e "\e[31mThere are no tests available\e[0m"
+    exit 0
+  else
+    echo -e "\e[31mTests failed with error code $exitCode\e[0m"
+    exit $exitCode
+  fi
 fi
 
 tests="$(echo $output | grep -o "# tests [0-9]\{0,\}" | cut -d " " -f3)"
