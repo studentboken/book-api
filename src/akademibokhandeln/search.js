@@ -57,7 +57,7 @@ function fetchResults(url, options) {
     });
 
     debug('Formatted results');
-    return Promise.resolve(books);
+    return books;
   });
 }
 

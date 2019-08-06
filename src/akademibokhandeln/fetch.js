@@ -39,7 +39,7 @@ function fetch(book, url) {
     book.description = description.replace(/<br[^/>]*\/?>/g, '\n');
 
     debug('Formatted book');
-    return Promise.resolve(book);
+    return book;
   });
 }
 

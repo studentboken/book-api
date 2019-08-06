@@ -49,7 +49,7 @@ function fetch(book, url) {
     book.categories = formattedCategories;
 
     debug('Formatted book');
-    return Promise.resolve(book);
+    return book;
   });
 }
 
