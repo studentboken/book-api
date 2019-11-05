@@ -19,6 +19,8 @@ function fetchResults(url, options) {
 
     $('.product-grid-item').each((index, element) => {
       const script = $(element).find('script').get()[0];
+      if (!script)
+        return;
       const content = script.children[0].data;
       const cartItem = content.match(/__addToCartData.push\((.*)\)/);
       if (cartItem !== null && cartItem.length >= 1) {

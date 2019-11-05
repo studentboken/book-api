@@ -4,52 +4,55 @@ const debug = require('debug')('book-api:adlibris-fetch');
 
 function fetch(book, url) {
   debug(`Fetching book with url ${url}`);
-  return axios.get(url).then(response => {
-    debug('Fetched book. Formatting');
-    const $ = cheerio.load(response.data);
-    const description = $('#product-description').text().trim();
-    const info = $('.product-info-panel__attributes.container').text().trim().replace(/\s*\n\s*/g, '\n').split('\n');
 
-    const result = {};
-    let key = null;
-    let previous = [];
-    for (const line of info) {
-      if (line.match(/^[^:]+:$/)) {
-        if (key !== null) {
-          result[key] = previous.length > 1 ? previous : previous[0] || null;
-          previous = [];
-        }
+  return new Promise((resolve, reject) => {
+    axios.get(url).then(response => {
+      debug('Fetched book. Formatting');
+      const $ = cheerio.load(response.data);
+      const scripts = $('script');
 
-        key = line.substr(0, line.length - 1);
-      } else {
-        previous.push(line);
-      }
-    }
-    result[key] = previous.length > 1 ? previous : previous[0] || null;
+      let pageData = null;
+      scripts.each((index, script) => {
+        const text = $(script).html();
+        if (text.indexOf("window.pageData") === -1)
+          return;
 
-    const categories = $('#product-info-panel__categories').text().replace(/^\s*/gm, '').replace(/\s*$/gm, '').replace(/^[^\n]*\n/, '').replace(/\n/g, '').split(',');
+        pageData = JSON.parse(text.replace('window.pageData = ', '').replace('};', '}'));
+      });
 
-    const formattedCategories = [];
-    for (const line of categories) {
-      const match = line.match(/([^(]+)(\(inom (.+)\))?/);
-      if (match !== null) {
-        if (match[3] && !formattedCategories.includes(match[3].trim()))
-          formattedCategories.push(match[3].trim());
+      if (!pageData)
+        return reject(new Error("No page data available"));
 
-        if (match[1] && !formattedCategories.includes(match[1].trim()))
-          formattedCategories.push(match[1].trim());
-      }
-    }
+      if (pageData['Product']['Variants'].length === 0)
+        return reject(new Error("No product data available"));
 
-    book.published = result['Utgiven'] ? new Date(result['Utgiven']) : book.published;
-    book.publisher = result['Förlag'] || null;
-    book.pages = Number(result['Antal sidor']) || null;
-    book.weight = result['Vikt'] || null;
-    book.description = description;
-    book.categories = formattedCategories;
+      const rawPublished = pageData['Product']['Variants'][0]['Published'];
+      book.published = new Date(`${rawPublished.substr(0, 4)}-${rawPublished.substr(4, 2)}-${rawPublished.substr(6, 2)}`);
 
-    debug('Formatted book');
-    return book;
+      const publisherData = pageData['Product']['Variants'][0]['ProductInfo']['Publisher'];
+      if (publisherData)
+        book.publisher = publisherData['Values'][0]['Value'];
+
+      const pagesData = pageData['Product']['Variants'][0]['ProductInfo']['Page'];
+      if (pagesData)
+        book.pages = pagesData['Values'][0]['Value'];
+
+      const weightData = pageData['Product']['Variants'][0]['ProductInfo']['Weight']
+      if (weightData)
+        book.weight = `${weightData['Values'][0]['Value']} ${weightData['Values'][0]['Unit']}`;
+
+      book.description = pageData['Product']['Variants'][0]['Description'];
+
+      if (!pageData['GetCategoryUri'])
+        return resolve(book);
+
+      axios.get('https://www.adlibris.com' + pageData['GetCategoryUri']).then(categoriesResponse => {
+        book.categories = categoriesResponse.data['categories'].map(x => x['Category']['CategoryName']);
+
+        debug('Formatted book');
+        resolve(book);
+      }).catch(reject);
+    }).catch(reject);
   });
 }
 
