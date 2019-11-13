@@ -22,14 +22,12 @@ checkDependencies:
     paths:
       - build/badges/*.svg
     when: always
-  allow_failure: true
   only:
     - schedules
 
 lint:
   stage: staticAnalysis
   script: npm run-script lint
-  allow_failure: true
 
 checkDuplicateCode:
   stage: staticAnalysis
@@ -43,4 +41,3 @@ test:
 coverage:
   stage: test
   script: ./ci/coverage.sh
-  allow_failure: true
