@@ -14,7 +14,7 @@ function fetch(book, url) {
       let pageData = null;
       scripts.each((index, script) => {
         const text = $(script).html();
-        if (text.indexOf('window.pageData') === -1)
+        if (!text.includes('window.pageData'))
           return;
 
         pageData = JSON.parse(text.replace('window.pageData = ', '').replace('};', '}'));
@@ -27,7 +27,7 @@ function fetch(book, url) {
         return reject(new Error('No product data available'));
 
       const rawPublished = pageData['ProductVariants'][0]['Published'];
-      book.published = new Date(`${rawPublished.substr(0, 4)}-${rawPublished.substr(4, 2)}-${rawPublished.substr(6, 2)}`);
+      book.published = new Date(`${rawPublished.slice(0, 5)}-${rawPublished.slice(4, 7)}-${rawPublished.slice(6, 9)}`);
 
       const publisherData = pageData['ProductVariants'][0]['ProductInfo']['Publisher'];
       if (publisherData)

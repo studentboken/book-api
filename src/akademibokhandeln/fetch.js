@@ -24,7 +24,7 @@ function fetch(book, url) {
           previous = [];
         }
 
-        key = line.substr(0, line.length - 1);
+        key = line.slice(0, line.length);
       } else {
         previous.push(line);
       }
