@@ -14,17 +14,17 @@ function fetch(book, url) {
       let pageData = null;
       scripts.each((index, script) => {
         const text = $(script).html();
-        if (text.indexOf("window.pageData") === -1)
+        if (text.indexOf('window.pageData') === -1)
           return;
 
         pageData = JSON.parse(text.replace('window.pageData = ', '').replace('};', '}'));
       });
 
       if (!pageData)
-        return reject(new Error("No page data available"));
+        return reject(new Error('No page data available'));
 
       if (pageData['ProductVariants'].length === 0)
-        return reject(new Error("No product data available"));
+        return reject(new Error('No product data available'));
 
       const rawPublished = pageData['ProductVariants'][0]['Published'];
       book.published = new Date(`${rawPublished.substr(0, 4)}-${rawPublished.substr(4, 2)}-${rawPublished.substr(6, 2)}`);
@@ -37,7 +37,7 @@ function fetch(book, url) {
       if (pagesData)
         book.pages = pagesData['Values'][0]['Value'];
 
-      const weightData = pageData['ProductVariants'][0]['ProductInfo']['Weight']
+      const weightData = pageData['ProductVariants'][0]['ProductInfo']['Weight'];
       if (weightData)
         book.weight = `${weightData['Values'][0]['Value']} ${weightData['Values'][0]['Unit']}`;
 
